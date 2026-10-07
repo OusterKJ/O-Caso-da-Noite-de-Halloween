@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O Caso da Noite de Halloween – Caso 31-10</title>
+<style>
+  :root{
+    --papel:#e8dfce; --roxo:#5a2a5e; --barra:#421d44; --vinho:#7a1f1f; --cinza:#8a8590; --linha:#a9a3ad;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#2a2230;font-family:"Courier New",monospace;color:var(--roxo);padding:24px 0}
+  .pagina{
+    position:relative;width:794px;min-height:1123px;margin:0 auto 24px;background:var(--papel);
+    border:3px double var(--roxo);outline:1px solid var(--roxo);outline-offset:-9px;
+    padding:40px 56px 64px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.45);
+    break-after:page;page-break-after:always;
+  }
+  .topo{position:relative;display:flex;justify-content:space-between;align-items:flex-end;font-size:10px;
+    border-bottom:1px solid var(--cinza);padding-bottom:6px;margin-bottom:26px;margin-top:20px}
+  .topo .conf{color:var(--vinho);font-weight:bold}
+  .topo .luas{position:absolute;right:-12px;top:-22px;font-size:18px;letter-spacing:6px;color:var(--roxo)}
+  .rodape{position:absolute;right:56px;bottom:26px;font-size:10px;color:var(--cinza)}
+  h1{font-family:Georgia,"Times New Roman",serif;color:#3a1a45;font-size:38px;text-align:center;margin:90px 0 26px}
+  h2{font-family:Georgia,"Times New Roman",serif;color:var(--roxo);font-size:28px;text-align:center;margin:0 0 2px}
+  .sub{font-style:italic;font-size:12px;text-align:center;margin:0 0 20px;color:#6b6670}
+  .aviso{border:2px solid var(--vinho);padding:16px 20px;font-size:16px;margin:0 0 28px;color:#6d1a1a}
+  .aviso b{font-size:17px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+  label.campo{display:block;font-size:9px;font-weight:bold;text-transform:uppercase;margin-top:12px}
+  label.campo input{display:block;width:100%;border:0;border-bottom:1px solid var(--cinza);height:30px;
+    background:transparent;font:13px "Courier New",monospace;color:#2a2230;outline:none}
+  label.campo input:focus,td input:focus,.caixa textarea:focus{background:rgba(255,255,255,.35)}
+  /* caixas com barra no topo */
+  .caixa{border:1px solid var(--cinza);margin-top:20px;background:transparent}
+  .caixa>.barra-t{text-transform:uppercase;background:var(--barra);color:#f1e9f2;font-size:11px;font-weight:bold;padding:8px 10px}
+  .caixa textarea{display:block;width:100%;border:0;background-color:transparent;resize:vertical;outline:none;
+    font:13px/31px "Courier New",monospace;color:#2a2230;padding:0 18px;min-height:var(--h,160px);
+    background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 30px,var(--linha) 30px,var(--linha) 31px);
+    background-position:0 18px;background-attachment:local;padding-top:18px}
+  .duas{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+  /* tabelas */
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+  th{background:var(--barra);color:#f1e9f2;text-align:left;font-size:10px;padding:8px 8px}
+  td{border:1px solid var(--cinza);padding:0;height:44px}
+  td input{width:100%;height:100%;border:0;background:transparent;font:12px "Courier New",monospace;
+    padding:4px 8px;color:#2a2230;outline:none}
+  /* espaço de foto */
+  .foto{position:relative;margin:18px;border:2px dashed var(--cinza);height:var(--h,300px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;
+    font-size:12px;color:#6b6670;overflow:hidden;transition:background .15s}
+  .foto.arrasta{background:rgba(66,29,68,.12);border-color:var(--roxo)}
+  .foto .meta{font-size:10px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center}
+  .foto .meta input{border:0;border-bottom:1px solid var(--cinza);background:transparent;font:10px "Courier New",monospace;
+    width:90px;color:#2a2230;outline:none;text-align:center}
+  .btn-arq{display:inline-block;background:var(--barra);color:#fff;font:bold 11px "Courier New",monospace;
+    padding:8px 14px;border-radius:3px;cursor:pointer;border:0}
+  .btn-arq:hover{background:var(--roxo)}
+  .foto input[type=file]{display:none}
+  .foto .dica{font-size:10px;color:var(--cinza)}
+  .foto .prev{position:absolute;inset:0;background:var(--papel);display:none;flex-direction:column;align-items:center;justify-content:center}
+  .foto.tem .prev{display:flex}
+  .foto .prev img{max-width:100%;max-height:calc(100% - 40px);object-fit:contain}
+  .foto .prev .nome{font-size:12px;word-break:break-all;padding:20px;text-align:center}
+  .foto .prev .acoes{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:8px;justify-content:center}
+  .foto .prev .acoes button,.foto .prev .acoes label{font:10px "Courier New",monospace;background:var(--barra);color:#fff;
+    border:0;padding:5px 9px;border-radius:3px;cursor:pointer}
+  .foto .prev .acoes button.rem{background:var(--vinho)}
+  .solucao{border:2px solid var(--vinho);padding:16px 20px;margin-top:22px;font-size:16px;color:#6d1a1a}
+  .solucao b{font-size:17px}
+  .solucao label{margin-left:18px;cursor:pointer}
+  /* carimbo */
+  .carimbo{position:absolute;left:50%;top:50%;width:420px;height:420px;transform:translate(-50%,-48%);
+    pointer-events:none;z-index:5;opacity:.5}
+  .carimbo svg{width:100%;height:100%}
+  /* barra de ações */
+  .acoes-topo{position:fixed;top:10px;right:16px;z-index:50}
+  .acoes-topo button{background:var(--barra);color:#fff;border:1px solid #8a5a8e;padding:9px 14px;font:12px "Courier New",monospace;
+    cursor:pointer;border-radius:4px;margin-left:6px}
+  .acoes-topo button:hover{background:var(--roxo)}
+  @media (max-width:830px){
+    body{padding:0} .pagina{width:100%;margin:0 0 12px;padding:30px 18px 60px;min-height:0;outline:none}
+    .rodape{right:18px} .grid2,.duas{grid-template-columns:1fr} .carimbo{width:280px;height:280px}
+    h1{font-size:28px;margin-top:50px}
+  }
+  @media print{
+    body{background:#fff;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .acoes-topo{display:none}
+    .pagina{margin:0;box-shadow:none;width:100%;min-height:277mm}
+    .foto:not(.tem) .btn-arq,.foto:not(.tem) .dica{visibility:hidden}
+    .foto .prev .acoes{display:none}
+    @page{size:A4;margin:6mm}
+  }
+</style>
+</head>
+<body>
+
+<!-- PÁGINA 1 -->
+<section class="pagina" data-n="1">
+  <h1>O CASO DA NOITE DE HALLOWEEN</h1>
+  <p class="sub">Dossiê de desaparecimento • Caso nº 31-10</p>
+  <div class="aviso"><b>CONFIDENCIAL:</b> existem relatos contraditórios e evidências ainda não verificadas.</div>
+  <div class="grid2">
+    <label class="campo">Desaparecido(a)<input type="text"></label>
+    <label class="campo">Investigador<input type="text"></label>
+    <label class="campo">Data do desaparecimento<input type="text"></label>
+    <label class="campo">Último horário registrado<input type="text"></label>
+    <label class="campo">Último local confirmado<input type="text"></label>
+    <label class="campo">Status<input type="text"></label>
+  </div>
+  <div class="caixa"><div class="barra-t">Resumo inicial do caso</div><textarea style="--h:190px"></textarea></div>
+</section>
+
+<!-- PÁGINA 2 -->
+<section class="pagina" data-n="2">
+  <h2>II. QUEM DESAPARECEU?</h2>
+  <p class="sub">Ficha da pessoa desaparecida</p>
+  <div class="grid2">
+    <label class="campo">Nome completo<input type="text"></label>
+    <label class="campo">Apelido<input type="text"></label>
+    <label class="campo">Idade<input type="text"></label>
+    <label class="campo">Telefone<input type="text"></label>
+    <label class="campo">Ocupação<input type="text"></label>
+    <label class="campo">Último contato<input type="text"></label>
+    <label class="campo">Endereço<input type="text"></label>
+    <label class="campo">Relação com o caso<input type="text"></label>
+  </div>
+  <div class="caixa">
+    <div class="barra-t">FOTOGRAFIA DA PESSOA DESAPARECIDA</div>
+    <div class="foto" style="--h:300px" data-foto data-legenda="Pessoa desaparecida"></div>
+  </div>
+  <div class="duas">
+    <div class="caixa"><div class="barra-t">Personalidade / hábitos</div><textarea style="--h:140px"></textarea></div>
+    <div class="caixa"><div class="barra-t">Informações importantes</div><textarea style="--h:140px"></textarea></div>
+  </div>
+</section>
+
+<!-- PÁGINA 3 -->
+<section class="pagina" data-n="3">
+  <h2>III. A ÚLTIMA NOITE</h2>
+  <p class="sub">Linha do tempo — 31 de outubro</p>
+  <table data-cols="4" data-rows="8"><thead><tr><th>HORA</th><th>LOCAL</th><th>EVENTO</th><th>FONTE</th></tr></thead><tbody></tbody></table>
+  <div class="caixa"><div class="barra-t">O que não bate na linha do tempo?</div><textarea style="--h:140px"></textarea></div>
+</section>
+
+<!-- PÁGINA 4 -->
+<section class="pagina" data-n="4">
+  <h2>IV. A CENA</h2>
+  <p class="sub">Local onde o último vestígio foi encontrado</p>
+  <div class="duas" style="align-items:start">
+    <div class="caixa" style="margin-top:0">
+      <div class="barra-t">MAPA / CROQUI DO LOCAL</div>
+      <div class="foto" style="--h:300px" data-foto data-legenda="Mapa / croqui"></div>
+    </div>
+    <div>
+      <label class="campo" style="margin-top:0">Endereço<input type="text"></label>
+      <label class="campo">Clima<input type="text"></label>
+      <label class="campo">Iluminação<input type="text"></label>
+      <label class="campo">Portas / Janelas<input type="text"></label>
+      <label class="campo">Testemunhas<input type="text"></label>
+    </div>
+  </div>
+  <div class="caixa"><div class="barra-t">Descrição da cena</div><textarea style="--h:190px"></textarea></div>
+</section>
+
+<!-- PÁGINA 5 -->
+<section class="pagina" data-n="5">
+  <h2>V. EVIDÊNCIAS</h2>
+  <p class="sub">Objetos recuperados na noite do desaparecimento</p>
+  <table data-cols="5" data-rows="8"><thead><tr><th>Nº</th><th>OBJETO</th><th>LOCAL</th><th>HORÁRIO</th><th>OBSERVAÇÃO</th></tr></thead><tbody></tbody></table>
+  <div class="caixa"><div class="barra-t">Anotações sobre evidências</div><textarea style="--h:140px"></textarea></div>
+</section>
+
+<!-- PÁGINA 6 -->
+<section class="pagina" data-n="6">
+  <h2>VI. FOTOGRAFIAS</h2>
+  <p class="sub">Procure detalhes que não estão descritos</p>
+  <div class="duas" style="align-items:start">
+    <div class="caixa" style="margin-top:0"><div class="barra-t">FOTO 01 — ÚLTIMO LOCAL</div><div class="foto" style="--h:300px" data-foto></div></div>
+    <div class="caixa" style="margin-top:0"><div class="barra-t">FOTO 02 — OBJETO ENCONTRADO</div><div class="foto" style="--h:300px" data-foto></div></div>
+  </div>
+  <div class="duas">
+    <div class="caixa"><div class="barra-t">Detalhes da Foto 01</div><textarea style="--h:110px"></textarea></div>
+    <div class="caixa"><div class="barra-t">Detalhes da Foto 02</div><textarea style="--h:110px"></textarea></div>
+  </div>
+</section>
+
+<!-- PÁGINA 7 -->
+<section class="pagina" data-n="7">
+  <h2>VII. DEPOIMENTOS</h2>
+  <p class="sub">Três versões. Uma delas contém uma contradição.</p>
+  <div class="grid2">
+    <label class="campo">Testemunha<input type="text"></label>
+    <label class="campo">Horário<input type="text"></label>
+    <label class="campo">Relação com a vítima<input type="text"></label>
+    <label class="campo">Local<input type="text"></label>
+  </div>
+  <div class="caixa"><div class="barra-t">Relato da testemunha</div><textarea style="--h:250px"></textarea></div>
+  <div class="duas">
+    <div class="caixa"><div class="barra-t">Contradições</div><textarea style="--h:140px"></textarea></div>
+    <div class="caixa"><div class="barra-t">Perguntas sem resposta</div><textarea style="--h:140px"></textarea></div>
+  </div>
+</section>
+
+<!-- PÁGINA 8 -->
+<section class="pagina" data-n="8">
+  <h2>VIII. PESSOAS ENVOLVIDAS</h2>
+  <p class="sub">Não confunda suspeita com culpa.</p>
+  <table data-cols="5" data-rows="5"><thead><tr><th>Nº</th><th>PESSOA</th><th>MOTIVO</th><th>OPORTUNIDADE</th><th>ÁLIBI</th></tr></thead><tbody></tbody></table>
+  <div class="duas">
+    <div class="caixa"><div class="barra-t">Conexões</div><textarea style="--h:190px"></textarea></div>
+    <div class="caixa"><div class="barra-t">O que cada pessoa está escondendo?</div><textarea style="--h:190px"></textarea></div>
+  </div>
+</section>
+
+<!-- PÁGINA 9 -->
+<section class="pagina" data-n="9">
+  <h2>IX. QUADRO DE INVESTIGAÇÃO</h2>
+  <p class="sub">Cruze as pistas antes de concluir.</p>
+  <div class="duas">
+    <div class="caixa" style="margin-top:0"><div class="barra-t">FATOS CONFIRMADOS</div><textarea style="--h:190px"></textarea></div>
+    <div class="caixa" style="margin-top:0"><div class="barra-t">PISTAS / INDÍCIOS</div><textarea style="--h:190px"></textarea></div>
+    <div class="caixa"><div class="barra-t">CONTRADIÇÕES</div><textarea style="--h:190px"></textarea></div>
+    <div class="caixa"><div class="barra-t">HIPÓTESES</div><textarea style="--h:190px"></textarea></div>
+  </div>
+  <div class="caixa"><div class="barra-t">A pergunta que resolve o caso</div><textarea style="--h:120px"></textarea></div>
+</section>
+
+<!-- PÁGINA 10 -->
+<section class="pagina" data-n="10">
+  <h2>X. RELATÓRIO FINAL</h2>
+  <p class="sub">Página reservada ao investigador</p>
+  <div class="caixa" style="margin-top:0"><div class="barra-t">O que aconteceu?</div><textarea style="--h:190px"></textarea></div>
+  <div class="caixa"><div class="barra-t">Quem é responsável?</div><textarea style="--h:160px"></textarea></div>
+  <div class="caixa"><div class="barra-t">Como as pistas provam isso?</div><textarea style="--h:190px"></textarea></div>
+  <div class="solucao"><b>SOLUÇÃO:</b>
+    <label><input type="radio" name="sol"> RESOLVIDO</label>
+    <label><input type="radio" name="sol"> INCONCLUSIVO</label>
+    <label><input type="radio" name="sol"> AINDA HÁ ALGO ERRADO</label>
+  </div>
+</section>
+
+<script>
+  const CARIMBO = `
+  <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" fill="#4a4550">
+    <defs>
+      <path id="arcoSup" d="M 60 210 A 150 150 0 0 1 360 210"/>
+      <path id="arcoInf" d="M 40 210 A 170 170 0 0 0 380 210"/>
+    </defs>
+    <circle cx="210" cy="210" r="196" fill="none" stroke="#4a4550" stroke-width="9"/>
+    <circle cx="210" cy="210" r="112" fill="none" stroke="#4a4550" stroke-width="4"/>
+    <text font-family="Impact,Arial Black,sans-serif" font-size="44" letter-spacing="3"><textPath href="#arcoSup" startOffset="50%" text-anchor="middle">CONFIDENTIAL</textPath></text>
+    <text font-family="Impact,Arial Black,sans-serif" font-size="44" letter-spacing="3" dy="30"><textPath href="#arcoInf" startOffset="50%" text-anchor="middle" side="left">CONFIDENTIAL</textPath></text>
+    <g transform="rotate(-8 210 210)">
+      <rect x="22" y="160" width="376" height="100" rx="14" fill="#4a4550"/>
+      <text x="210" y="233" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="74" fill="#e8dfce">CONFIDENTIAL</text>
+    </g>
+    <text x="210" y="105" text-anchor="middle" font-size="18" letter-spacing="14">★ ★ ★</text>
+    <text x="210" y="330" text-anchor="middle" font-size="18" letter-spacing="14">★ ★ ★</text>
+  </svg>`;
+
+  // Cabeçalho, rodapé e carimbo em cada página
+  document.querySelectorAll('.pagina').forEach(p=>{
+    const n=p.dataset.n.padStart(2,'0');
+    p.insertAdjacentHTML('afterbegin',
+      `<div class="topo"><span class="luas">■ ■ ■</span>
+        <span>EXPEDIENTE DE INVESTIGAÇÃO • ARQUIVO HALLOWEEN</span><span class="conf">CONFIDENCIAL</span></div>`);
+    p.insertAdjacentHTML('beforeend',
+      `<div class="carimbo">${CARIMBO}</div><div class="rodape">CASO 31-10 • PÁGINA ${n}/10</div>`);
+  });
+
+  // Tabelas
+  document.querySelectorAll('table[data-rows]').forEach(t=>{
+    const cols=+t.dataset.cols, rows=+t.dataset.rows, tb=t.querySelector('tbody');
+    for(let r=0;r<rows;r++){
+      const tr=document.createElement('tr');
+      for(let c=0;c<cols;c++){ const td=document.createElement('td'); td.innerHTML='<input type="text">'; tr.appendChild(td); }
+      tb.appendChild(tr);
+    }
+  });
+
+  // Espaços de foto/arquivo
+  document.querySelectorAll('[data-foto]').forEach((box,i)=>{
+    const id='arq'+i;
+    box.innerHTML = `
+      <label class="btn-arq" for="${id}">[ ADICIONAR ARQUIVO / FOTO ]</label>
+      <input type="file" id="${id}" accept="image/*,application/pdf,.heic">
+      ${box.dataset.legenda ? `<div>${box.dataset.legenda}</div>` : ''}
+      <div class="meta">Arquivo: __________________ Evidência nº: ______</div>
+      <div class="prev"><div class="conteudo"></div>
+        <div class="acoes"><label for="${id}">Trocar</label><button type="button" class="rem">Remover</button></div></div>`;
+    const input=box.querySelector('input[type=file]'), cont=box.querySelector('.conteudo');
+    let url=null;
+    function mostrar(f){
+      if(!f) return;
+      if(url) URL.revokeObjectURL(url);
+      url=URL.createObjectURL(f);
+      cont.innerHTML='';
+      if(f.type.startsWith('image/')){ const im=document.createElement('img'); im.src=url; cont.appendChild(im); }
+      else { const d=document.createElement('div'); d.className='nome'; d.textContent='📎 '+f.name; cont.appendChild(d); }
+      box.classList.add('tem');
+    }
+    input.addEventListener('change',e=>mostrar(e.target.files[0]));
+    box.querySelector('.rem').addEventListener('click',()=>{
+      input.value=''; cont.innerHTML=''; box.classList.remove('tem');
+    });
+  });
+</script>
+</body>
+</html>
